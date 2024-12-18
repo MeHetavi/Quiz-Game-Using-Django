@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% comment %} {% block body %}
+<h1>Hello, {{user.username}} !!</h1>
+
+        <th>Genre</th>
+        <th>total_questions</th>
+        <th>correct_answers</th>
+    {% for session in sessions %}
+            {{session.genre}}
+            {{session.total_questions}}
+            {{session.correct_answers}}
+        {% endfor %}
+<a href="{% url "logout" %}">Logout</a>
+{% endblock body %} {% endcomment %}
+
+{% block style %}
+<style>
+    /* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg,rgb(49, 108, 97),rgb(82, 89, 121));
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.dashboard {
+  background-color: rgba(0,0,0,0.3);
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  width: 85%;
+  max-width: 900px;
+  overflow: hidden;
+}
+
+.user-info {
+  padding: 20px;
+  text-align: center;
+  color: #badbd7;
+}
+
+.user-info .header h1 {
+  font-size: 2rem;
+  margin-bottom: 5px;
+}
+
+.user-info .header p span {
+  color:#c9c6a7;
+  font-weight: bold;
+}
+
+.user-info .summary {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 15px;
+}
+
+.user-info .summary .stat {
+  background:#badbd7;
+  border-radius: 10px;
+  padding: 10px 20px;
+  color: #000;
+  text-align: center;
+  flex: 1;
+  margin: 0 10px;
+}
+
+.user-info .summary .stat h2 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.user-info .summary .stat p {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.quiz-results {
+  padding: 20px;
+}
+
+.quiz-results h2 {
+  text-align: center;
+  color: #badbd7;
+  margin-bottom: 15px;
+  font-size: 1.8rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 10px;
+  border-color:black
+}
+
+table th, table td {
+  text-align: center;
+  padding: 15px 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+table th {
+  background:rgb(56, 121, 122);
+  color: #000;
+  font-size: 1rem;
+}
+
+table td {
+  color: #333;
+  font-size: 0.95rem;
+  background-color:#badbd7;
+}
+
+a{
+    margin:10px;
+    padding:10px;
+    text-decoration:none;
+    color:#badbd7;
+}
+</style>
+{% endblock style %}
+{% block body %}
+<div class="dashboard">
+    <div class="user-info">
+        <div class="header">
+            <h1>Welcome, {{user.username}}</h1>
+        </div>
+        <div class="summary">
+            <div class="stat">
+                <h2>Quizzes Played</h2>
+          <p id="quiz-count">{{sessions | length}}</p>
+        </div>
+    </div>
+</div>
+<div class="quiz-results">
+    <h2>Quiz Results</h2>
+      <table>
+        <thead>
+            <tr>
+                <th>Genre</th>
+                <th>Date</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for session in sessions %}
+            <tr>
+                <td>{{session.genre}}</td>
+                <td>{{session.started_at}}</td>
+                <td>{{ session.correct_answers }}/4</td>
+            </tr>
+            {% endfor %}
+    </tbody>
+</table>
+</div>
+<a href="{% url "home" %}">Home</a>
+<a href="{% url "logout" %}" style="color:red;">Logout</a>
+</div>
+{% endblock body %}

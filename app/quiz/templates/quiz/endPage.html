@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block style %}
+<style>
+
+    
+    /* Falling Paper Animation */
+@keyframes fall {
+    0% {
+        transform: translateY(-1px);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(100vh);
+        opacity: 1;
+    }
+}
+
+.paper {
+    position: absolute;
+    top: -50px;
+    width: 20px;
+    height: 20px;
+    background-color: #fff;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: fall linear infinite;
+    animation-duration: 5s;
+}
+
+.paper:nth-child(odd) {
+    animation-duration: 6s; /* Different duration for variety */
+    background-color:green
+}
+
+.paper:nth-child(even) {
+    animation-duration: 8s;
+    background-color:blue
+}
+
+.paper:nth-child(3n) {
+    animation-duration: 9s;
+}
+
+body {
+    position: relative;
+    font-family: Arial, sans-serif;
+        background: linear-gradient(135deg,rgb(49, 108, 97),rgb(82, 89, 121));
+    padding: 20px;
+}
+
+.container {
+    position: relative;
+    padding: 50px;
+    background-color: rgba(0,0,0,0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h1 {
+    color: #badbd7;
+}
+
+a.link {
+    color: #badbd7;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 20px;
+    display: inline-block;
+}
+
+a.link:hover {
+    text-decoration: underline;
+}
+
+/* Add some spacing for the content */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    margin-bottom: 10px;
+}
+
+</style>
+{% endblock style %}
+
+{% block script %}
+
+{% endblock script %}
+{% block body %}
+<div class="container">
+    <h1>Session Details</h1>
+    <p>Total Questions: {{ session.total_questions }}</p>
+    <p>Correct Answers: {{ session.correct_answers }}</p>
+    <p>Incorrect Answers: {{ session.incorrect_answers }}</p>
+
+    <ul>
+    {% for attempt in attempted %}
+        <li>
+            <strong>Question:</strong> {{ attempt.question }}<br>
+            <strong>Selected Option:</strong> {{ attempt.selected_option }}<br>
+            <strong>Correct?</strong> {{ attempt.is_correct }}
+        </li>
+    {% endfor %}
+    </ul>
+
+    <a href="{% url 'home' %}" class="link">Home</a>
+</div>
+
+<!-- Paper falling effect -->
+{% for paper in papers %}
+    <div class="paper" style="left: {{ paper.left }}%; animation-delay: {{ paper.delay }}s;"></div>
+{% endfor %}
+
+{% endblock body %}

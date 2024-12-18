@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block style %}
+<style>
+    body{
+        background: linear-gradient(135deg,rgb(49, 108, 97),rgb(82, 89, 121));
+    }
+
+        .success{
+        background: green;
+    }
+    .error{
+        background: red;
+    }
+    
+    .alert {
+            padding: 15px;
+            color: white;
+            opacity: 1;
+            transition: opacity 0.6s;
+            margin-bottom: 15px;
+        }
+        
+        .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .closebtn:hover {
+            color: black;
+        }
+    .box{
+        border-radius:20px;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+      background-color: rgba(0,0,0,0.3);
+        align-items:center;
+        justify-content:center;
+        padding:30px;
+        margin: 40px auto;
+        width:fit-content
+    }
+    *{
+        color:#fff
+    }
+
+    input{
+        background: #badbd7;
+        width:20vw;
+        color:black
+    }
+    .link{
+        text-decoration:none;
+        color:white;
+        padding:20px;
+    }
+
+    button{
+        color:black;
+        width:100%;
+        border-radius:100px;
+        background-color: #badbd7;
+    }
+</style>
+{% endblock style %}
+
+{% block body %}
+ {% if messages %}
+    {% for message in messages %}
+    {% if message.tags %}
+    <div class="alert {{message.tags}}">
+        <span class="closebtn " onclick="this.parentElement.style.display='none';">&times;</span>
+        {{message}}
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+<div class="box">
+    <h1>{{name}}</h1>
+     <form action="" method='POST'>
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+        <p style="color: red;">
+            {% for err in form.non_field_errors %}
+            {{ err|striptags }}
+            {% endfor %}
+        </p>
+        {% endif %}
+        {% for field in form %}
+            {{field.label_tag}}
+            <br>
+            {{field}} 
+            <br>
+            {{ field.help_text }}
+            {% for err in field.errors %}
+                <p style="color: red;">
+                    {{ err|striptags }}
+                </p>
+            {% endfor %}
+        <br>
+            <br>
+        {% endfor %}
+        <button type='submit'>Submit</button>
+        <br>
+        <br>
+        <a href="{% url link %}" class="link">{{ link }}</a>
+    </form>
+</div>
+ 
+{% endblock body %}

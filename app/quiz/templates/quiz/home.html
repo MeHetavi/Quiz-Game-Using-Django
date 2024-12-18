@@ -1,0 +1,140 @@
+{% block style %}
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+    
+    body {
+        background: linear-gradient(135deg,rgb(49, 108, 97),rgb(82, 89, 121));
+        
+    }
+    .box{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+    .container {
+        text-align: center;
+        padding: 20px;
+        max-width: 800px;
+        width: 90%;
+        background-color: rgba(0,0,0,0.3);
+        border-radius: 15px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .header {
+        margin-bottom: 20px;
+    }
+    
+    .header h1 {
+        font-size: 2.5rem;
+        color: #badbd7;
+    }
+    
+    .genres {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+    
+    .genre {
+        background-color:#badbd7;
+        color:rgb(0, 0, 0);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: bold;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .genre:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+    }
+    
+    .genre a {
+        text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    
+    #a{
+        margin:10px;
+        padding:10px;
+        text-decoration:none;
+        color:#badbd7;
+    }
+
+        .success{
+        background: green;
+    }
+    .error{
+        background: red;
+    }
+    
+    .alert {
+            padding: 15px;
+            color: white;
+            opacity: 1;
+            transition: opacity 0.6s;
+            margin-bottom: 15px;
+        }
+        
+        .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .closebtn:hover {
+            color: black;
+        }
+</style>
+{% endblock style %}
+
+{% block body %}
+
+{% if messages %}
+    {% for message in messages %}
+    {% if message.tags %}
+    <div class="alert {{message.tags}}">
+        <span class="closebtn " onclick="this.parentElement.style.display='none';">&times;</span>
+        {{message}}
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+    <div class='box'>
+
+        <div class="container">
+            <div class="header">
+                <h1>Welcome to the Quiz Portal</h1>
+                <p>Select a genre to begin your quiz!</p>
+            </div>
+            <div class="genres">
+                {% for type in genre %}
+                <div class="genre">
+                    <a href="{% url "quiz" genre=type %}">{{type}}</a>
+                </div>
+                {% endfor %}
+            </div>
+            <br>
+            <a href="{% url "dashboard" %}" id="a">Dashboard</a>
+        </div>
+        
+    </div>
+        {% endblock body %}

@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block style %}
+<style>
+    body{
+        background: linear-gradient(135deg,rgb(49, 108, 97),rgb(82, 89, 121));
+
+    }
+        .quiz-container {
+            width:fit-content;
+            display: flex;
+            justify-content: center;
+            justify-self: center;
+            margin: 20px;
+            padding: 20px;
+            background-color: rgba(0,0,0,0.3) ;
+            border-radius: 8px;
+        }
+
+        .quiz-left {
+            width: 70%;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 20px;
+            color:white
+        }
+
+        .quiz-question h3 {
+            font-size: 24px;
+            color: #badbd7;
+        }
+
+        .quiz-options {
+            margin-top: 20px;
+        }
+
+        .quiz-option-btn {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background-color: #badbd7;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .quiz-option-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background-color:rgb(53, 94, 55);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+{% endblock style %}
+
+
+{% block script %}
+
+<script>
+function selectOption(e,selectedOptionText) {
+    // Get all option buttons
+    const optionButtons = document.querySelectorAll('.quiz-option-btn');
+    
+    // Reset all buttons to default background
+    optionButtons.forEach(button => {
+        button.style.backgroundColor = '#f1f1f1';
+    });
+    
+    // Find the selected button and change its color to blue
+    const selectedButton = document.getElementById(selectedOptionText);
+    selectedButton.style.backgroundColor = '#badbd7';
+
+    document.getElementById('submit-answer').style.display='block';
+    document.getElementById('selectedOption').value=e;
+
+    
+    // Optional: Store the selected option
+    selectedOption = selectedOptionText;
+}
+
+</script>
+{% endblock script %}
+
+
+{% block body %}
+
+<div class="quiz-header">
+    <h1>{{ genre }} Quiz</h1>
+</div>
+    <div class="quiz-container">
+            <form action="" method='POST'>
+                {% csrf_token %}
+                <div class="quiz-question">
+                    <h3>{{ question.question_text }}</h3>
+                    
+                    <input type="hidden" name="id" value="{{question.id}}">
+
+                    {% for option in question.options %}
+                        <button
+                            type="button"
+                            class="quiz-option-btn" 
+                            name="option"
+                            id="{{option.option_text}}" 
+                            value="{{option.option_text}}"
+                            onclick="selectOption(this.value,'{{option.option_text}}')"
+                        >
+                            {{ option.option_text }}
+                        </button>
+                    {% endfor %} 
+                    
+                    <input type="hidden" id="selectedOption" name="selectedOption" value="">
+                    <input type="hidden" id="index" name="index" value="{{index}}">
+                
+                </div>
+                <button id="submit-answer" type="submit" class="submit-btn" style="display:none;">Submit</button>
+            </form>
+        
+       
+    </div>
+
+    
+{% endblock %}
